@@ -197,7 +197,7 @@ JWT_SECRET=your_jwt_secret_here
 ### 1. Clone the repository
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/Rahul-Vashistt/url-shortener
 ```
 
 ### 2. Navigate into the project
