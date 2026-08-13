@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Admin Dashboard | URL Shortener</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+
+            font-family:
+                'Segoe UI',
+                Tahoma,
+                Geneva,
+                Verdana,
+                sans-serif;
+
+            background: #f8fafc;
+            color: #111827;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        nav {
+            height: 68px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .admin-badge {
+            margin-left: 8px;
+            padding: 4px 8px;
+
+            border-radius: 6px;
+
+            background: #ede9fe;
+            color: #6d28d9;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .username {
+            color: #4b5563;
+            font-size: 14px;
+        }
+
+        .logout {
+            padding: 8px 14px;
+
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+
+            background: white;
+            color: #374151;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            text-decoration: none;
+
+            transition: 0.2s;
+        }
+
+        .logout:hover {
+            background: #f3f4f6;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        main {
+            width: min(1200px, 90%);
+            margin: 0 auto;
+
+            padding: 50px 0 70px;
+        }
+
+        .heading {
+            margin-bottom: 30px;
+        }
+
+        .heading h1 {
+            margin: 0 0 8px;
+
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .heading p {
+            margin: 0;
+
+            color: #6b7280;
+            font-size: 15px;
+        }
+
+        /* =========================
+           MESSAGE
+        ========================= */
+
+        .message {
+            margin-bottom: 25px;
+            padding: 14px 16px;
+
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+
+            background: #fef2f2;
+            color: #b91c1c;
+
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* =========================
+           STAT CARDS
+        ========================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 16px;
+
+            margin-bottom: 35px;
+        }
+
+        .stat-card {
+            padding: 22px;
+
+            background: white;
+
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+
+            box-shadow:
+                0 5px 18px rgba(0, 0, 0, 0.03);
+        }
+
+        .stat-label {
+            margin-bottom: 8px;
+
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        /* =========================
+           URL TABLE
+        ========================= */
+
+        .section-header {
+            margin-bottom: 18px;
+        }
+
+        .section-header h2 {
+            margin: 0 0 6px;
+
+            font-size: 22px;
+        }
+
+        .section-header p {
+            margin: 0;
+
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+
+            background: white;
+
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+
+            box-shadow:
+                0 5px 18px rgba(0, 0, 0, 0.03);
+        }
+
+        table {
+            width: 100%;
+
+            min-width: 900px;
+
+            border-collapse: collapse;
+        }
+
+        th {
+            padding: 14px 18px;
+
+            background: #f9fafb;
+
+            border-bottom: 1px solid #e5e7eb;
+
+            color: #6b7280;
+
+            text-align: left;
+
+            font-size: 12px;
+            font-weight: 600;
+
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        td {
+            padding: 17px 18px;
+
+            border-bottom: 1px solid #f1f5f9;
+
+            font-size: 14px;
+
+            vertical-align: middle;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #fafafa;
+        }
+
+        .original-url {
+            max-width: 280px;
+
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            color: #374151;
+        }
+
+        .short-link {
+            color: #4f46e5;
+
+            font-weight: 600;
+
+            text-decoration: none;
+        }
+
+        .short-link:hover {
+            text-decoration: underline;
+        }
+
+        .click-count {
+            font-weight: 700;
+        }
+
+        .owner {
+            color: #374151;
+        }
+
+        .date {
+            color: #6b7280;
+            white-space: nowrap;
+        }
+
+        /* =========================
+           EMPTY STATE
+        ========================= */
+
+        .empty-state {
+            padding: 70px 20px;
+
+            text-align: center;
+
+            color: #6b7280;
+        }
+
+        .empty-state h3 {
+            margin: 0 0 8px;
+
+            color: #374151;
+            font-size: 18px;
+        }
+
+        .empty-state p {
+            margin: 0;
+
+            font-size: 14px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            nav {
+                padding: 0 5%;
+            }
+
+            .username {
+                display: none;
+            }
+
+            main {
+                width: 92%;
+
+                padding-top: 35px;
+            }
+
+            .heading h1 {
+                font-size: 25px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-badge {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
+
+    <nav>
+
+        <div class="logo">
+
+            URL Shortener
+
+            <span class="admin-badge">
+                Admin
+            </span>
+
+        </div>
+
+        <div class="nav-right">
+
+            <span class="username">
+                <% if (locals.name) { %>
+                    Hi, <%= locals.name %>
+                <% } %>
+            </span>
+
+            <a
+                class="logout"
+                href="/user/logout"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main>
+
+        <!-- =========================
+             PAGE HEADING
+        ========================== -->
+
+        <section class="heading">
+
+            <h1>
+                Admin Dashboard
+            </h1>
+
+            <p>
+                Monitor and manage all shortened URLs across the platform.
+            </p>
+
+        </section>
+
+
+        <!-- =========================
+             ERROR MESSAGE
+        ========================== -->
+
+        <% if (locals.message) { %>
+
+            <div class="message">
+                <%= message %>
+            </div>
+
+        <% } %>
+
+
+        <!-- =========================
+             STATISTICS
+        ========================== -->
+
+        <section class="stats">
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Total URLs
+                </div>
+
+                <div class="stat-value">
+
+                    <%= totalUrls %>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Total Clicks
+                </div>
+
+                <div class="stat-value">
+
+                    <%= totalClicks %>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Most Clicked URL
+                </div>
+
+                <div class="stat-value">
+
+                    <%= mostClicks %>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             ALL URLS
+        ========================== -->
+
+        <section>
+
+            <div class="section-header">
+
+                <h2>
+                    All Shortened URLs
+                </h2>
+
+                <p>
+                    Every shortened URL created by users.
+                </p>
+
+            </div>
+
+
+            <% if (locals.urls && urls.length > 0) { %>
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Original URL
+                                </th>
+
+                                <th>
+                                    Shortened URL
+                                </th>
+
+                                <th>
+                                    Clicks
+                                </th>
+
+                                <th>
+                                    Created By
+                                </th>
+
+                                <th>
+                                    Created
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            <% urls.forEach(url => { %>
+
+                                <tr>
+
+                                    <td>
+
+                                        <div class="original-url">
+                                            <%= url.originalUrl %>
+                                        </div>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <a
+                                            class="short-link"
+                                            href="/url/<%= url.shortId %>"
+                                            target="_blank"
+                                        >
+                                            /url/<%= url.shortId %>
+                                        </a>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <span class="click-count">
+                                            <%= url.clicks %>
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <span class="owner">
+                                            <%= url.createdBy.fullName %>
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <span class="date">
+                                            <%= new Date(url.createdAt).toLocaleString("en-US", {
+                                                month: "short",
+                                                day: "numeric",
+                                                year: "numeric",
+                                                hour: "numeric",
+                                                minute: "2-digit"
+                                            }) %>
+                                        </span>
+
+                                    </td>
+
+                                </tr>
+
+                            <% }) %>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            <% } else { %>
+
+                <div class="table-container">
+
+                    <div class="empty-state">
+
+                        <h3>
+                            No URLs found
+                        </h3>
+
+                        <p>
+                            There are currently no shortened URLs in the system.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            <% } %>
+
+        </section>
+
+    </main>
+
+</body>
+</html>
