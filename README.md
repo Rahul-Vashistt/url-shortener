@@ -181,7 +181,7 @@ Administrators can view URL information across the application.
 Create a `.env` file in the root of the project:
 
 ```env
-MONGO_URI=mongodb://127.0.0.1:27017/v2urlshortener
+MONGO_URI=mongodb://127.0.0.1:27017/DB_NAME
 JWT_SECRET=your_jwt_secret_here
 ```
 
