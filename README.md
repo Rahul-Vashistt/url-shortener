@@ -217,7 +217,7 @@ npm install
 Create a `.env` file in the project root:
 
 ```env
-MONGO_URI=mongodb://127.0.0.1:27017/v2urlshortener
+MONGO_URI=mongodb://127.0.0.1:27017/DB_NAME
 JWT_SECRET=your_jwt_secret_here
 ```
 
