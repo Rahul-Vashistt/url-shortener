@@ -1,5 +1,5 @@
 import express from "express";
-import { handleLogin, handleSignUp } from "../controllers/auth.controller.js";
+import { handleForgotPassword, handleLogin, handleResendVerification, handleResetPassword, handleResetPasswordPage, handleSignUp, handleVerifyEmail } from "../controllers/auth.controller.js";
 
 export const authRouter = express.Router();
 
@@ -19,3 +19,23 @@ authRouter.get("/logout", (req, res) => {
     res.clearCookie("token");
     return res.redirect("/user/login");
 })
+
+authRouter
+    .route("/verify-email")
+    .get(handleVerifyEmail)
+
+authRouter
+    .route("/resend-verification")
+    .post(handleResendVerification)
+
+authRouter
+    .route("/forgot-password")
+    .get((req, res) => {
+        return res.render("forgotPassword");
+    })
+    .post(handleForgotPassword);
+
+authRouter
+    .route("/reset-password")
+    .get(handleResetPasswordPage)
+    .post(handleResetPassword)

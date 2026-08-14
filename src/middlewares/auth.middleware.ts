@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import { verifyToken } from "../services/auth.service.js";
+import { verifyToken } from "../services/token.service.js"; 
 import { USER } from "../models/user.model.js";
 
 export async function checkAuth(
@@ -20,6 +20,8 @@ export async function checkAuth(
     const user = await USER.findById(userId);
 
     if (!user) return next();
+
+    if(!user.isVerified) return next();
 
     req.user = user;
     return next();

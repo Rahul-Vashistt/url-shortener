@@ -1,743 +1,769 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0"
-        >
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-        <title>Dashboard | URL Shortener</title>
+    <title>Dashboard | URL Shortener</title>
 
-        <style>
-            * {
-                box-sizing: border-box;
-            }
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-            body {
-                margin: 0;
+        body {
+            margin: 0;
 
-                font-family:
-                    'Segoe UI',
-                    Tahoma,
-                    Geneva,
-                    Verdana,
-                    sans-serif;
+            font-family:
+                'Segoe UI',
+                Tahoma,
+                Geneva,
+                Verdana,
+                sans-serif;
 
-                background: #f8fafc;
-                color: #111827;
-            }
+            background: #f8fafc;
+            color: #111827;
+        }
 
-            /* =========================
-            NAVBAR
-            ========================= */
+        /* =========================
+        NAVBAR
+        ========================= */
+
+        nav {
+            height: 68px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .username {
+            color: #4b5563;
+            font-size: 14px;
+        }
+
+        .logout {
+            padding: 8px 14px;
+
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+
+            background: white;
+            color: #374151;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            text-decoration: none;
+
+            transition: 0.2s;
+        }
+
+        .logout:hover {
+            background: #f3f4f6;
+        }
+
+        /* =========================
+        MAIN
+        ========================= */
+
+        main {
+            width: min(1100px, 90%);
+            margin: 0 auto;
+
+            padding: 50px 0 70px;
+        }
+
+        .heading {
+            margin-bottom: 30px;
+        }
+
+        .heading h1 {
+            margin: 0 0 8px;
+
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .heading p {
+            margin: 0;
+
+            color: #6b7280;
+            font-size: 15px;
+        }
+
+        /* =========================
+        URL GENERATOR
+        ========================= */
+
+        .generator {
+            padding: 28px;
+
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
+        }
+
+        .generator h2 {
+            margin: 0 0 18px;
+
+            font-size: 18px;
+        }
+
+        .url-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .url-form input {
+            flex: 1;
+
+            min-width: 0;
+
+            padding: 13px 14px;
+
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+
+            outline: none;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+        }
+
+        .url-form input:focus {
+            border-color: #6366f1;
+
+            box-shadow:
+                0 0 0 3px rgba(99, 102, 241, 0.12);
+        }
+
+        .generate-btn {
+            padding: 13px 20px;
+
+            border: none;
+            border-radius: 8px;
+
+            background: #4f46e5;
+            color: white;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .generate-btn:hover {
+            background: #4338ca;
+            transform: translateY(-1px);
+        }
+
+        /* =========================
+        GENERATED URL
+        ========================= */
+
+        .generated {
+            margin-top: 22px;
+            padding: 18px;
+
+            background: #f5f7ff;
+
+            border: 1px solid #c7d2fe;
+            border-radius: 10px;
+        }
+
+        .generated-label {
+            margin-bottom: 8px;
+
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .generated-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .short-url {
+            flex: 1;
+
+            padding: 10px 12px;
+
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+
+            color: #4f46e5;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .copy-btn {
+            padding: 10px 14px;
+
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+
+            background: white;
+            color: #374151;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+        .copy-btn:hover {
+            background: #f3f4f6;
+        }
+
+        /* =========================
+        ANALYTICS HEADER
+        ========================= */
+
+        .analytics {
+            margin-top: 45px;
+        }
+
+        .analytics-header {
+            margin-bottom: 20px;
+        }
+
+        .analytics-header h2 {
+            margin: 0 0 6px;
+
+            font-size: 22px;
+        }
+
+        .analytics-header p {
+            margin: 0;
+
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* =========================
+        STAT CARDS
+        ========================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            padding: 22px;
+
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+        }
+
+        .stat-label {
+            margin-bottom: 8px;
+
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .stat-value {
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        /* =========================
+        TABLE
+        ========================= */
+
+        .table-container {
+            overflow-x: auto;
+
+            background: white;
+
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 750px;
+        }
+
+        th {
+            padding: 14px 18px;
+
+            background: #f9fafb;
+
+            border-bottom: 1px solid #e5e7eb;
+
+            color: #6b7280;
+
+            text-align: left;
+
+            font-size: 12px;
+            font-weight: 600;
+
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        td {
+            padding: 17px 18px;
+
+            border-bottom: 1px solid #f1f5f9;
+
+            font-size: 14px;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #fafafa;
+        }
+
+        .original-url {
+            max-width: 280px;
+
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            color: #374151;
+        }
+
+        .short-link {
+            color: #4f46e5;
+
+            font-weight: 600;
+
+            text-decoration: none;
+        }
+
+        .short-link:hover {
+            text-decoration: underline;
+        }
+
+        .click-count {
+            font-weight: 600;
+        }
+
+        .date {
+            color: #6b7280;
+        }
+
+        /* =========================
+        EMPTY STATE
+        ========================= */
+
+        .empty-state {
+            padding: 60px 20px;
+
+            text-align: center;
+
+            color: #6b7280;
+        }
+
+        .empty-state h3 {
+            margin: 0 0 8px;
+
+            color: #374151;
+            font-size: 17px;
+        }
+
+        .empty-state p {
+            margin: 0;
+
+            font-size: 14px;
+        }
+
+        /* =========================
+        RESPONSIVE
+        ========================= */
+
+        @media (max-width: 700px) {
 
             nav {
-                height: 68px;
-
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-
-                padding: 0 6%;
-
-                background: white;
-                border-bottom: 1px solid #e5e7eb;
-            }
-
-            .logo {
-                font-size: 20px;
-                font-weight: 700;
-                color: #111827;
-            }
-
-            .nav-right {
-                display: flex;
-                align-items: center;
-                gap: 18px;
+                padding: 0 5%;
             }
 
             .username {
-                color: #4b5563;
-                font-size: 14px;
+                display: none;
             }
-
-            .logout {
-                padding: 8px 14px;
-
-                border: 1px solid #d1d5db;
-                border-radius: 7px;
-
-                background: white;
-                color: #374151;
-
-                font-size: 14px;
-                font-weight: 600;
-
-                text-decoration: none;
-
-                transition: 0.2s;
-            }
-
-            .logout:hover {
-                background: #f3f4f6;
-            }
-
-            /* =========================
-            MAIN
-            ========================= */
 
             main {
-                width: min(1100px, 90%);
-                margin: 0 auto;
-
-                padding: 50px 0 70px;
-            }
-
-            .heading {
-                margin-bottom: 30px;
+                width: 92%;
+                padding-top: 35px;
             }
 
             .heading h1 {
-                margin: 0 0 8px;
-
-                font-size: 30px;
-                font-weight: 700;
+                font-size: 25px;
             }
-
-            .heading p {
-                margin: 0;
-
-                color: #6b7280;
-                font-size: 15px;
-            }
-
-            /* =========================
-            URL GENERATOR
-            ========================= */
 
             .generator {
-                padding: 28px;
-
-                background: white;
-                border: 1px solid #e5e7eb;
-                border-radius: 14px;
-
-                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
-            }
-
-            .generator h2 {
-                margin: 0 0 18px;
-
-                font-size: 18px;
+                padding: 20px;
             }
 
             .url-form {
-                display: flex;
-                gap: 10px;
-            }
-
-            .url-form input {
-                flex: 1;
-
-                min-width: 0;
-
-                padding: 13px 14px;
-
-                border: 1px solid #d1d5db;
-                border-radius: 8px;
-
-                outline: none;
-
-                font-size: 14px;
-
-                transition: 0.2s;
-            }
-
-            .url-form input:focus {
-                border-color: #6366f1;
-
-                box-shadow:
-                    0 0 0 3px rgba(99, 102, 241, 0.12);
+                flex-direction: column;
             }
 
             .generate-btn {
-                padding: 13px 20px;
-
-                border: none;
-                border-radius: 8px;
-
-                background: #4f46e5;
-                color: white;
-
-                font-size: 14px;
-                font-weight: 600;
-
-                cursor: pointer;
-
-                transition: 0.2s;
-            }
-
-            .generate-btn:hover {
-                background: #4338ca;
-                transform: translateY(-1px);
-            }
-
-            /* =========================
-            GENERATED URL
-            ========================= */
-
-            .generated {
-                margin-top: 22px;
-                padding: 18px;
-
-                background: #f5f7ff;
-
-                border: 1px solid #c7d2fe;
-                border-radius: 10px;
-            }
-
-            .generated-label {
-                margin-bottom: 8px;
-
-                color: #6b7280;
-                font-size: 13px;
+                width: 100%;
             }
 
             .generated-row {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
-
-            .short-url {
-                flex: 1;
-
-                padding: 10px 12px;
-
-                background: white;
-                border: 1px solid #d1d5db;
-                border-radius: 7px;
-
-                color: #4f46e5;
-
-                font-size: 14px;
-                font-weight: 600;
-
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
+                flex-direction: column;
+                align-items: stretch;
             }
 
             .copy-btn {
-                padding: 10px 14px;
-
-                border: 1px solid #d1d5db;
-                border-radius: 7px;
-
-                background: white;
-                color: #374151;
-
-                font-size: 13px;
-                font-weight: 600;
-
-                cursor: pointer;
+                width: 100%;
             }
-
-            .copy-btn:hover {
-                background: #f3f4f6;
-            }
-
-            /* =========================
-            ANALYTICS HEADER
-            ========================= */
-
-            .analytics {
-                margin-top: 45px;
-            }
-
-            .analytics-header {
-                margin-bottom: 20px;
-            }
-
-            .analytics-header h2 {
-                margin: 0 0 6px;
-
-                font-size: 22px;
-            }
-
-            .analytics-header p {
-                margin: 0;
-
-                color: #6b7280;
-                font-size: 14px;
-            }
-
-            /* =========================
-            STAT CARDS
-            ========================= */
 
             .stats {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 16px;
-
-                margin-bottom: 22px;
+                grid-template-columns: 1fr;
             }
+        }
+    </style>
+</head>
 
-            .stat-card {
-                padding: 22px;
+<body>
 
-                background: white;
-                border: 1px solid #e5e7eb;
-                border-radius: 12px;
-            }
+    <!-- =========================
+        NAVIGATION
+    ========================== -->
 
-            .stat-label {
-                margin-bottom: 8px;
+    <nav>
 
-                color: #6b7280;
-                font-size: 13px;
-            }
+        <div class="logo">
+            URL Shortener
+        </div>
 
-            .stat-value {
-                font-size: 26px;
-                font-weight: 700;
-            }
+        <div class="nav-right">
 
-            /* =========================
-            TABLE
-            ========================= */
+            <!-- Replace with logged-in user's username -->
+            <span class="username">
+                <% if (locals.name) { %>
+                    Hi, <%= locals.name %>
+                <% } %>
+            </span>
 
-            .table-container {
-                overflow-x: auto;
+            <!-- Your logout route -->
+            <a
+                class="logout"
+                href="/user/logout"
+            >
+                Logout
+            </a>
 
-                background: white;
+        </div>
 
-                border: 1px solid #e5e7eb;
-                border-radius: 12px;
-            }
+    </nav>
 
-            table {
-                width: 100%;
 
-                border-collapse: collapse;
-
-                min-width: 750px;
-            }
-
-            th {
-                padding: 14px 18px;
-
-                background: #f9fafb;
-
-                border-bottom: 1px solid #e5e7eb;
-
-                color: #6b7280;
-
-                text-align: left;
-
-                font-size: 12px;
-                font-weight: 600;
-
-                text-transform: uppercase;
-                letter-spacing: 0.03em;
-            }
-
-            td {
-                padding: 17px 18px;
-
-                border-bottom: 1px solid #f1f5f9;
-
-                font-size: 14px;
-            }
-
-            tbody tr:last-child td {
-                border-bottom: none;
-            }
-
-            tbody tr:hover {
-                background: #fafafa;
-            }
-
-            .original-url {
-                max-width: 280px;
-
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-
-                color: #374151;
-            }
-
-            .short-link {
-                color: #4f46e5;
-
-                font-weight: 600;
-
-                text-decoration: none;
-            }
-
-            .short-link:hover {
-                text-decoration: underline;
-            }
-
-            .click-count {
-                font-weight: 600;
-            }
-
-            .date {
-                color: #6b7280;
-            }
-
-            /* =========================
-            EMPTY STATE
-            ========================= */
-
-            .empty-state {
-                padding: 60px 20px;
-
-                text-align: center;
-
-                color: #6b7280;
-            }
-
-            .empty-state h3 {
-                margin: 0 0 8px;
-
-                color: #374151;
-                font-size: 17px;
-            }
-
-            .empty-state p {
-                margin: 0;
-
-                font-size: 14px;
-            }
-
-            /* =========================
-            RESPONSIVE
-            ========================= */
-
-            @media (max-width: 700px) {
-
-                nav {
-                    padding: 0 5%;
-                }
-
-                .username {
-                    display: none;
-                }
-
-                main {
-                    width: 92%;
-                    padding-top: 35px;
-                }
-
-                .heading h1 {
-                    font-size: 25px;
-                }
-
-                .generator {
-                    padding: 20px;
-                }
-
-                .url-form {
-                    flex-direction: column;
-                }
-
-                .generate-btn {
-                    width: 100%;
-                }
-
-                .generated-row {
-                    flex-direction: column;
-                    align-items: stretch;
-                }
-
-                .copy-btn {
-                    width: 100%;
-                }
-
-                .stats {
-                    grid-template-columns: 1fr;
-                }
-            }
-        </style>
-    </head>
-
-    <body>
+    <main>
 
         <!-- =========================
-            NAVIGATION
+            PAGE HEADING
         ========================== -->
 
-        <nav>
+        <section class="heading">
 
-            <div class="logo">
-                URL Shortener
-            </div>
+            <h1>
+                Dashboard
+            </h1>
 
-            <div class="nav-right">
+            <p>
+                Create and manage your shortened URLs.
+            </p>
 
-                <!-- Replace with logged-in user's username -->
-                <span class="username">
-                    <% if (locals.name) { %>
-                        Hi, <%= locals.name %>
-                    <% } %>
-                </span>
+        </section>
 
-                <!-- Your logout route -->
-                <a
-                    class="logout"
-                    href="/user/logout"
+
+        <!-- =========================
+            URL GENERATOR
+        ========================== -->
+
+        <section class="generator">
+
+            <h2>
+                Shorten a URL
+            </h2>
+
+            <form
+                class="url-form"
+                method="post"
+                action="/url"
+            >
+
+                <input
+                    type="url"
+                    name="originalUrl"
+                    placeholder="https://example.com/very-long-url"
+                    required
                 >
-                    Logout
-                </a>
+
+                <button
+                    class="generate-btn"
+                    type="submit"
+                >
+                    Generate
+                </button>
+
+            </form>
+
+            <% if (locals.shortId) { %>
+                <div class="generated">
+
+                    <div class="generated-label">
+                        Your shortened URL
+                    </div>
+
+                    <div class="generated-row">
+
+                        <a
+                            class="short-url"
+                            href="/url/<%- shortId %>"
+                            target="_blank"
+                        >
+                            http://localhost:3000/url/<%= shortId %>
+                        </a>
+
+                        <button
+                            class="copy-btn"
+                            type="button"
+                        >
+                            Copy
+                        </button>
+
+                </div>
 
             </div>
+            <% } %>
 
-        </nav>
+            <script>
+                document.querySelector(".copy-btn").addEventListener("click", async () => {
+                    const button = document.querySelector(".copy-btn");
+                    const url = document.querySelector(".short-url").textContent.trim();
+
+                    try {
+                        await navigator.clipboard.writeText(url);
+
+                        button.textContent = "Copied!";
+
+                        setTimeout(() => {
+                            button.textContent = "Copy";
+                        }, 1500);
+
+                    } catch (error) {
+                        console.error("Failed to copy URL:", error);
+
+                        button.textContent = "Failed";
+
+                        setTimeout(() => {
+                            button.textContent = "Copy";
+                        }, 1500);
+                    }
+                });
+            </script>
+
+        </section>
 
 
-        <main>
+        <!-- =========================
+            ANALYTICS
+        ========================== -->
 
-            <!-- =========================
-                PAGE HEADING
-            ========================== -->
+        <section class="analytics">
 
-            <section class="heading">
-
-                <h1>
-                    Dashboard
-                </h1>
-
-                <p>
-                    Create and manage your shortened URLs.
-                </p>
-
-            </section>
-
-
-            <!-- =========================
-                URL GENERATOR
-            ========================== -->
-
-            <section class="generator">
+            <div class="analytics-header">
 
                 <h2>
-                    Shorten a URL
+                    Your Analytics
                 </h2>
 
-                <form
-                    class="url-form"
-                    method="post"
-                    action="/url"
-                >
+                <p>
+                    Track the performance of your shortened URLs.
+                </p>
 
-                    <input
-                        type="url"
-                        name="originalUrl"
-                        placeholder="https://example.com/very-long-url"
-                        required
-                    >
-
-                    <button
-                        class="generate-btn"
-                        type="submit"
-                    >
-                        Generate
-                    </button>
-
-                </form>
-
-                <% if (locals.shortId) { %>
-                    <div class="generated">
-
-                        <div class="generated-label">
-                            Your shortened URL
-                        </div>
-
-                        <div class="generated-row">
-
-                            <a
-                                class="short-url"
-                                href="/url/<%- shortId %>"
-                                target="_blank"
-                            >
-                                http://localhost:3000/url/<%= shortId %>
-                            </a>
-
-                            <button
-                                class="copy-btn"
-                                type="button"
-                            >
-                                Copy
-                            </button>
-
-                    </div>
-
-                </div>
-                <% } %>
-
-            </section>
+            </div>
 
 
             <!-- =========================
-                ANALYTICS
+                SUMMARY
             ========================== -->
 
-            <section class="analytics">
+            <div class="stats">
 
-                <div class="analytics-header">
+                <div class="stat-card">
 
-                    <h2>
-                        Your Analytics
-                    </h2>
-
-                    <p>
-                        Track the performance of your shortened URLs.
-                    </p>
-
-                </div>
-
-
-                <!-- =========================
-                    SUMMARY
-                ========================== -->
-
-                <div class="stats">
-
-                    <div class="stat-card">
-
-                        <div class="stat-label">
-                            Total URLs
-                        </div>
-
-                        <div class="stat-value">
-                            <%= totalUrls ?? 0 %>
-                        </div>
-
+                    <div class="stat-label">
+                        Total URLs
                     </div>
 
-
-                    <div class="stat-card">
-
-                        <div class="stat-label">
-                            Total Clicks
-                        </div>
-
-                        <div class="stat-value">
-                            <%= totalClicks ?? 0 %>
-                        </div>
-
-                    </div>
-
-
-                    <div class="stat-card">
-
-                        <div class="stat-label">
-                            Most Clicked
-                        </div>
-
-                        <div class="stat-value">
-                            <%= mostClicks ?? 0 %>
-                        </div>
-
+                    <div class="stat-value">
+                        <%= totalUrls ?? 0 %>
                     </div>
 
                 </div>
 
 
-                <!-- =========================
-                    URL ANALYTICS TABLE
-                ========================== -->
+                <div class="stat-card">
 
-                <% if (locals.urls && urls.length > 0) { %>
-                    <div class="table-container">
+                    <div class="stat-label">
+                        Total Clicks
+                    </div>
 
-                        <table>
+                    <div class="stat-value">
+                        <%= totalClicks ?? 0 %>
+                    </div>
 
-                            <thead>
+                </div>
 
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Most Clicked
+                    </div>
+
+                    <div class="stat-value">
+                        <%= mostClicks ?? 0 %>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                URL ANALYTICS TABLE
+            ========================== -->
+
+            <% if (locals.urls && urls.length > 0) { %>
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>
+                                    Original URL
+                                </th>
+
+                                <th>
+                                    Shortened URL
+                                </th>
+
+                                <th>
+                                    Clicks
+                                </th>
+
+                                <th>
+                                    Created
+                                </th>
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>           
+                            <% urls.forEach(url => { %>
                                 <tr>
-                                    <th>
-                                        Original URL
-                                    </th>
+                                    <td>
+                                        <div class="original-url">
+                                            <%= url.originalUrl %>
+                                        </div>
+                                    </td>
 
-                                    <th>
-                                        Shortened URL
-                                    </th>
+                                    <td>
+                                        <a
+                                            class="short-link"
+                                            href="/url/<%= url.shortId %>"
+                                            target="_blank"
+                                        >
+                                            /url/<%= url.shortId %>
+                                        </a>
+                                    </td>
 
-                                    <th>
-                                        Clicks
-                                    </th>
+                                    <td>
+                                        <span class="click-count">
+                                            <%= url.clicks %>
+                                        </span>
+                                    </td>
 
-                                    <th>
-                                        Created
-                                    </th>
+                                    <td>
+                                        <span class="date">
+                                            <%= new Date(url.createdAt).toLocaleString("en-US", {
+                                                month: "short",
+                                                day: "numeric",
+                                                year: "numeric",
+                                                hour: "numeric",
+                                                minute: "2-digit"
+                                            }) %>
+                                        </span>
+                                    </td>
                                 </tr>
+                            <% }) %>    
+                        </tbody>
 
-                            </thead>
+                    </table>
 
+                </div>
+            <% } else { %>
 
-                            <tbody>           
-                                <% urls.forEach(url => { %>
-                                    <tr>
-                                        <td>
-                                            <div class="original-url">
-                                                <%= url.originalUrl %>
-                                            </div>
-                                        </td>
+                <div class="empty-state">
+                    <h3>No URLs yet</h3>
+                    <p>
+                        Create your first shortened URL above.
+                    </p>
+                </div>
 
-                                        <td>
-                                            <a
-                                                class="short-link"
-                                                href="/url/<%= url.shortId %>"
-                                                target="_blank"
-                                            >
-                                                /url/<%= url.shortId %>
-                                            </a>
-                                        </td>
+            <% } %>
 
-                                        <td>
-                                            <span class="click-count">
-                                                <%= url.clicks %>
-                                            </span>
-                                        </td>
+        </section>
 
-                                        <td>
-                                            <span class="date">
-                                                <%= new Date(url.createdAt).toLocaleString("en-US", {
-                                                    month: "short",
-                                                    day: "numeric",
-                                                    year: "numeric",
-                                                    hour: "numeric",
-                                                    minute: "2-digit"
-                                                }) %>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                <% }) %>    
-                            </tbody>
+    </main>
 
-                        </table>
-
-                    </div>
-                <% } else { %>
-
-                    <div class="empty-state">
-                        <h3>No URLs yet</h3>
-                        <p>
-                            Create your first shortened URL above.
-                        </p>
-                    </div>
-
-                <% } %>
-
-            </section>
-
-        </main>
-
-    </body>
-    </html>
+</body>
+</html>

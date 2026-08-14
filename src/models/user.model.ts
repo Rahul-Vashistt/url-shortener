@@ -7,6 +7,11 @@ export interface User extends Document {
   email: string;
   password: string;
   role: string;
+  isVerified: boolean;
+  verificationToken?: string | undefined;
+  verificationTokenExpiry?: Date | undefined;
+  passwordResetToken?: string | undefined;
+  passwordResetTokenExpiry?: Date | undefined;
 }
 
 const userSchema = new mongoose.Schema<User>(
@@ -35,6 +40,22 @@ const userSchema = new mongoose.Schema<User>(
       type: String,
       uppercase: true,
       default: "USER",
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+    },
+    verificationTokenExpiry: {
+      type: Date,
+    },
+    passwordResetToken: {
+      type: String,
+    },
+    passwordResetTokenExpiry: {
+      type: Date,
     },
   },
   {
