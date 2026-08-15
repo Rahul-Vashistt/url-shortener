@@ -3,7 +3,7 @@ import type { Request, Response } from "express";
 import { USER } from "../models/user.model.js";
 import { createToken } from "../services/token.service.js";
 import { generateToken, hashToken } from "../utils/token.js";
-import { sendVerificationEmail } from "../services/email.service.js";
+import { sendPasswordResetEmail, sendVerificationEmail } from "../services/email.service.js";
 
 async function encryptPassword(
   password: string,
@@ -54,7 +54,7 @@ export async function handleLogin(req: Request, res: Response) {
 
   if (!user) {
     return res.render("login", {
-      message: "email is not registered. Please sign up",
+      message: "Email is not registered. Please sign up",
     });
   }
 
@@ -122,9 +122,9 @@ export async function handleSignUp(req: Request, res: Response) {
     verificationTokenExpiry,
   });
 
-  const verificationEmail = `${process.env.BASE_URL}/user/verify-email?token=${rawToken}`;
+  const verificationUrl = `${process.env.BASE_URL}/user/verify-email?token=${rawToken}`;
 
-  await sendVerificationEmail(email, verificationEmail);
+  await sendVerificationEmail(email, verificationUrl);
 
   res.status(201).redirect(`/user/verify-email`);
 }
@@ -212,9 +212,9 @@ export async function handleResendVerification(req: Request, res: Response) {
 
   await user.save();
 
-  const verificationEmail = `${process.env.BASE_URL}/user/verify-email?token=${rawToken}`;
+  const verificationUrl = `${process.env.BASE_URL}/user/verify-email?token=${rawToken}`;
 
-  await sendVerificationEmail(user.email, verificationEmail);
+  await sendVerificationEmail(user.email, verificationUrl);
 
   return res.render("verification", {
     status: "pending",
@@ -238,9 +238,9 @@ export async function handleForgotPassword(req: Request, res: Response) {
 
     await user.save();
 
-    const passwordResetEmail = `${process.env.BASE_URL}/user/reset-password?token=${rawToken}`;
+    const passwordResetUrl = `${process.env.BASE_URL}/user/reset-password?token=${rawToken}`;
 
-    await sendVerificationEmail(user.email, passwordResetEmail);
+    await sendPasswordResetEmail(user.email, passwordResetUrl);
 
     return res.render("forgotPassword", {
       status: "pending",

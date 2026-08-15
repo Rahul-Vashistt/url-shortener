@@ -12,9 +12,7 @@ export function restrictToRole(roles: string[]) {
         }
 
         if (!roles.includes(req.user.role)) {
-            return res
-                .status(403)
-                .send("You are unauthorized to access this content.");
+            return res.status(403).render("unauthorized");
         }
 
         return next();

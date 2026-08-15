@@ -232,3 +232,235 @@ export const sendVerificationEmail = async (
 
     return data;
 };
+
+
+export const sendPasswordResetEmail = async (
+    email: string,
+    resetUrl: string,
+) => {
+    const { data, error } = await resend.emails.send({
+        from: "URL Shortener <onboarding@resend.dev>",
+        to: email,
+        subject: "Reset your password",
+        html: `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Reset your password</title>
+            </head>
+
+            <body style="
+                margin: 0;
+                padding: 0;
+                background-color: #f8fafc;
+                font-family: Arial, Helvetica, sans-serif;
+                color: #111827;
+            ">
+
+                <table
+                    width="100%"
+                    cellpadding="0"
+                    cellspacing="0"
+                    border="0"
+                    style="padding: 40px 16px;"
+                >
+                    <tr>
+                        <td align="center">
+
+                            <!-- Main container -->
+                            <table
+                                width="100%"
+                                cellpadding="0"
+                                cellspacing="0"
+                                border="0"
+                                style="
+                                    max-width: 520px;
+                                    background-color: #ffffff;
+                                    border: 1px solid #e5e7eb;
+                                    border-radius: 16px;
+                                    overflow: hidden;
+                                "
+                            >
+
+                                <!-- Header -->
+                                <tr>
+                                    <td
+                                        align="center"
+                                        style="
+                                            padding: 32px 32px 24px;
+                                            background-color: #fff7ed;
+                                        "
+                                    >
+                                        <div style="
+                                            width: 56px;
+                                            height: 56px;
+                                            margin: 0 auto 16px;
+                                            border-radius: 50%;
+                                            background-color: #f97316;
+                                            color: #ffffff;
+                                            font-size: 26px;
+                                            line-height: 56px;
+                                            text-align: center;
+                                        ">
+                                            🔑
+                                        </div>
+
+                                        <h1 style="
+                                            margin: 0;
+                                            font-size: 24px;
+                                            line-height: 32px;
+                                            color: #111827;
+                                        ">
+                                            URL Shortener
+                                        </h1>
+                                    </td>
+                                </tr>
+
+                                <!-- Content -->
+                                <tr>
+                                    <td style="padding: 32px;">
+
+                                        <h2 style="
+                                            margin: 0 0 16px;
+                                            font-size: 22px;
+                                            line-height: 30px;
+                                            color: #111827;
+                                        ">
+                                            Reset your password
+                                        </h2>
+
+                                        <p style="
+                                            margin: 0 0 16px;
+                                            font-size: 15px;
+                                            line-height: 24px;
+                                            color: #4b5563;
+                                        ">
+                                            We received a request to reset the password
+                                            for your URL Shortener account.
+                                            Click the button below to choose a new password.
+                                        </p>
+
+                                        <!-- Button -->
+                                        <table
+                                            cellpadding="0"
+                                            cellspacing="0"
+                                            border="0"
+                                            style="margin: 28px auto;"
+                                        >
+                                            <tr>
+                                                <td
+                                                    align="center"
+                                                    style="
+                                                        border-radius: 8px;
+                                                        background-color: #f97316;
+                                                    "
+                                                >
+                                                    <a
+                                                        href="${resetUrl}"
+                                                        style="
+                                                            display: inline-block;
+                                                            padding: 13px 24px;
+                                                            font-size: 15px;
+                                                            font-weight: 600;
+                                                            color: #ffffff;
+                                                            text-decoration: none;
+                                                            border-radius: 8px;
+                                                        "
+                                                    >
+                                                        Reset my password
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <!-- Expiry notice -->
+                                        <div style="
+                                            margin: 24px 0;
+                                            padding: 14px 16px;
+                                            background-color: #f9fafb;
+                                            border: 1px solid #e5e7eb;
+                                            border-radius: 8px;
+                                        ">
+                                            <p style="
+                                                margin: 0;
+                                                font-size: 13px;
+                                                line-height: 20px;
+                                                color: #6b7280;
+                                            ">
+                                                ⏱ This password reset link will expire
+                                                in <strong>15 minutes</strong>.
+                                            </p>
+                                        </div>
+
+                                        <p style="
+                                            margin: 24px 0 8px;
+                                            font-size: 13px;
+                                            line-height: 20px;
+                                            color: #6b7280;
+                                        ">
+                                            If the button doesn't work, copy and paste
+                                            the following link into your browser:
+                                        </p>
+
+                                        <p style="
+                                            margin: 0;
+                                            font-size: 12px;
+                                            line-height: 18px;
+                                            word-break: break-all;
+                                        ">
+                                            <a
+                                                href="${resetUrl}"
+                                                style="
+                                                    color: #f97316;
+                                                    text-decoration: none;
+                                                "
+                                            >
+                                                ${resetUrl}
+                                            </a>
+                                        </p>
+
+                                    </td>
+                                </tr>
+
+                                <!-- Footer -->
+                                <tr>
+                                    <td
+                                        align="center"
+                                        style="
+                                            padding: 20px 32px;
+                                            background-color: #f9fafb;
+                                            border-top: 1px solid #e5e7eb;
+                                        "
+                                    >
+                                        <p style="
+                                            margin: 0;
+                                            font-size: 12px;
+                                            line-height: 18px;
+                                            color: #9ca3af;
+                                        ">
+                                            If you didn't request a password reset,
+                                            you can safely ignore this email.
+                                            Your password will remain unchanged.
+                                        </p>
+                                    </td>
+                                </tr>
+
+                            </table>
+
+                        </td>
+                    </tr>
+                </table>
+
+            </body>
+            </html>
+        `,
+    });
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    return data;
+};

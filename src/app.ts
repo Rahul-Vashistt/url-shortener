@@ -1,25 +1,13 @@
 import express from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
-import "dotenv/config";
 
 import { router } from "./routes/page.routes.js";
 import { authRouter } from "./routes/auth.routes.js";
 import { urlRouter } from "./routes/url.routes.js";
-
 import { checkAuth } from "./middlewares/auth.middleware.js";
-import { connectToMongoDB } from "./config/database.js";
 
 const app = express();
-const PORT = 3000;
-
-const mongoUri = process.env.MONGO_URI;
-
-if (!mongoUri) {
-    throw new Error("MONGO_URI is missing");
-}
-
-await connectToMongoDB(mongoUri);
 
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./src/views"));
@@ -33,6 +21,10 @@ app.use("/", router);
 app.use("/user", authRouter);
 app.use("/url", urlRouter);
 
+app.use((req, res) => {
+    return res.status(404).render("notFound");
+});
+
 app.use(
     (
         err: Error,
@@ -41,13 +33,8 @@ app.use(
         next: express.NextFunction
     ) => {
         console.error(err);
-
-        return res
-            .status(500)
-            .send("Internal server error");
+        return res.status(500).render("error");
     }
 );
 
-app.listen(PORT, () => {
-    console.log(`Server started at PORT: ${PORT}`);
-});
+export default app;

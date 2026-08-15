@@ -565,7 +565,7 @@
                             href="/url/<%- shortId %>"
                             target="_blank"
                         >
-                            http://localhost:3000/url/<%= shortId %>
+                            <%= `${process.env.BASE_URL}/${shortId}` %>
                         </a>
 
                         <button
@@ -575,9 +575,9 @@
                             Copy
                         </button>
 
-                </div>
+                    </div>
 
-            </div>
+                </div>
             <% } %>
 
             <script>

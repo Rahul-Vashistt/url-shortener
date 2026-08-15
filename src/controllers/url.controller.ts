@@ -31,19 +31,25 @@ export async function handleCreateShortUrl(req: Request, res: Response) {
 }
 
 export async function handleRedirectUrl(req: Request, res: Response) {
-  const { shortId } = req.params;
+    const { shortId } = req.params;
 
-  const entry = await URL.findOne({ shortId });
+    if (typeof shortId !== "string") {
+        return res.status(404).render("notFound");
+    }
 
-  if (!entry) {
-    return res.status(404).send("Short URL not found");
-  }
+    const entry = await URL.findOne({ shortId });
 
-  entry.clicks++;
-  await entry.save();
+    if (!entry) {
+        return res.status(404).render("notFound", {
+            shortId,
+        });
+    }
 
-  return res.redirect(entry.originalUrl);
-}
+    entry.clicks++;
+    await entry.save();
+
+    return res.redirect(entry.originalUrl);
+} 
 
 export async function handleGetUserUrls(req: Request, res: Response) {
   const userUrls = await URL

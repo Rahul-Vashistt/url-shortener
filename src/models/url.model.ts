@@ -1,14 +1,13 @@
 import mongoose from "mongoose";
-import type { Document } from "mongoose";
 
-export interface Url extends Document {
+export interface Url {
   originalUrl: string;
   shortId: string;
   clicks: number;
   createdBy: mongoose.Types.ObjectId;
 }
 
-const urlSchema = new mongoose.Schema(
+const urlSchema = new mongoose.Schema<Url>(
   {
     originalUrl: {
       type: String,
@@ -35,4 +34,4 @@ const urlSchema = new mongoose.Schema(
   },
 );
 
-export const URL = mongoose.model("Url", urlSchema);
+export const URL = mongoose.model<Url>("Url", urlSchema);
