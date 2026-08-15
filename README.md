@@ -6,9 +6,8 @@ This project was built as a learning project to practice backend development, au
 
 ## Live Demo
 
-[Live Demo](https://your-app-name.onrender.com)
+[Live Demo](https://url-shortener-4rzf.onrender.com/)
 
-> Replace the URL above with the actual Render URL after deployment.
 
 ## Features
 
